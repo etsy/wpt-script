@@ -1,0 +1,1 @@
+block   facebook.net google-analytics.com lognormal.net facebook.com

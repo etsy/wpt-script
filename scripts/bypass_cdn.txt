@@ -1,0 +1,9 @@
+setDns  site.etsystatic.com 38.106.64.123
+setDns  img0.etsystatic.com 38.106.64.125
+setDns  img1.etsystatic.com 38.106.64.125
+setDns  img2.etsystatic.com 38.106.64.125
+setDns  img3.etsystatic.com 38.106.64.125
+setDns  ny-image0.etsy.com 38.106.64.125
+setDns  ny-image1.etsy.com 38.106.64.125
+setDns  ny-image2.etsy.com 38.106.64.125
+setDns  ny-image3.etsy.com 38.106.64.125

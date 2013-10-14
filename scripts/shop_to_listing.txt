@@ -1,0 +1,4 @@
+logData 0
+navigate http://www.etsy.com/shop/EtsyStore
+logData 1
+navigate http://www.etsy.com/listing/92439453/etsy-keepin-it-real-stickers-set-of-5

@@ -1,0 +1,1 @@
+This directory contains scripts that use WebPagetest's scripting language to modify the behavior of a test.  You can include them in a test run by adding a "script" element to the JSON config file with a path that points to a script in this directory.
