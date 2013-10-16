@@ -1,7 +1,7 @@
-Webpagetest Scripts
+WebPagetest Script
 ===================
 
-Scripts to generate WebPagetest tests and graph results
+This tool is a simple wrapper for the WebPagetest API that allows you to easily generate tests and graph results
 
 example cron entry:
 ```bash
