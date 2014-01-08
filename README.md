@@ -73,6 +73,7 @@ individual metrics will be lost, or other oddities may occur.  Before doing anyt
 1. Remote desktop to the test agents that are having trouble and reboot them
 1. Check to see if the disk is full on the private WPT instance - once it hits 70% or so we start to see issues
 1. Check the XML results to make sure they are valid (e.g. http://www.yourwptinstall.com/xmlResult.php?test=*test_id*)
+1. Look at the run log for wpt-script (typically at /var/log/webpagetest/run.log or similar on the server where wpt-script is running).
 
 If you are still having issues, try posting in the
 [WebPagetest forums](http://www.webpagetest.org/forums/forumdisplay.php?fid=12) - Pat is extremely responsive.
