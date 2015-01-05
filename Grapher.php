@@ -16,7 +16,6 @@ class Grapher {
     public function graph($location, $label, $date, $data) {
         $base_ns = $this->base_ns;
         foreach($data as $key => $value) {
-            echo "$base_ns.$label.$key $value $date\n";
             `echo "$base_ns.$label.$key $value $date" | nc $this->graphite_server 2003`;
         }
     }
