@@ -219,12 +219,18 @@ class WebpagetestClient {
 
             // This is network read.
             $resultXML = simplexml_load_string(file_get_contents($runXML->data->xmlUrl));
+            var_dump($resultXML);
             $statusCode = $resultXML->statusCode;
 
             if ($statusCode == 200) {
                 $test = $resultXML->data->median->firstView;
 
                 if (!is_null($test)) {
+
+                    // Chromatic customizations to save and then upload offsite.
+                    var_dump($resultXML);
+                    file_put_contents('/webpagetest-runs/chromatichq.com-' . date("d-m-Y_H:i:s") . '.xml', file_get_contents($runXML->data->xmlUrl));
+                    // End Chromatic customizations.
 
                     $label_parts = explode(".", (string) $resultXML->data->label);
                     $browser = $label_parts[2];
