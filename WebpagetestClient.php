@@ -228,7 +228,7 @@ class WebpagetestClient {
 
                     // Chromatic customizations to save and then upload offsite.
                     $filename = preg_replace('#^https?://#', '', $resultXML->data->testUrl);
-                    $filename = preg_replace('/', '--', $filename);
+                    $filename = str_replace('/', '--', $filename);
                     file_put_contents('/webpagetest-runs/' . $filename . '-' . date("m-d-Y") . '.xml', file_get_contents($runXML->data->xmlUrl));
                     // End Chromatic customizations.
 
