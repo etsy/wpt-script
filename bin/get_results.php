@@ -41,23 +41,3 @@ $client = new WebpagetestClient($config);
 $results = $client->getResults($runs);
 
 $logging_ns = $config['logging_ns'];
-
-// Save the results to some file.
-
-// foreach ($results as $result) {
-//   $path = "/Users/chrisfree/Desktop/test.xml";
-//   var_dump($result);
-//   $resultXML = simplexml_load_string($result);
-//   file_put_contents($path, $resultXML);
-// }
-
-
-// $splunkLogger = new SplunkLogger($config['splunkLog'], $logging_ns);
-// foreach ($results as $result) {
-//     $splunkLogger->log($result);
-// }
-
-// $graphite = $config['graphite'];
-
-// $grapher = new Grapher($graphite, $logging_ns);
-// $grapher->graphResults($results);
