@@ -226,6 +226,11 @@ class WebpagetestClient {
 
                 if (!is_null($test)) {
 
+                    // Save XML locally for uploading offsite via Jenkins.
+                    $filename = preg_replace('#^https?://#', '', $resultXML->data->testUrl);
+                    $filename = str_replace('/', '--', $filename);
+                    file_put_contents('/webpagetest-runs/' . $filename . '-' . date("m-d-Y") . '.xml', file_get_contents($runXML->data->xmlUrl));
+
                     $label_parts = explode(".", (string) $resultXML->data->label);
                     $browser = $label_parts[2];
                     $pageName = $label_parts[0];
@@ -249,6 +254,35 @@ class WebpagetestClient {
                         'xmlUrl' => $runXML->data->xmlUrl,
                         'details' => $detailsUrl,
                     );
+
+                    $csv_results = array();
+                    // Setup the row data before adding to csv.
+                    $csv_results = array(
+                        $resultXML->data->location,
+                        $resultXML->data->label,
+                        $pageName, $browser,
+                        $test->date,
+                        $test->URL,
+                        $resultXML->data->testId,
+                        $resultXML->data->connectivity,
+                        $runXML->data->xmlUrl, $detailsUrl,
+                    );
+                    // Combine the above fields with numeric data via helper function.
+                    $csv_results = $csv_results + $this->extractNumericData($test);
+
+                    $file = '/webpagetest-runs/' . $filename . ".csv";
+
+                    if (!file_exists($file)) {
+                        $headers = array('location', 'label', 'pageName', 'browser', 'date', 'URL', 'testId', 'connectivity', 'xmlUrl', 'details', 'loadTime', 'TTFB', 'bytesIn', 'bytesInDoc', 'connections', 'requests', 'requestsDoc', 'render', 'fullyLoaded', 'docTime', 'domTime', 'domElements', 'score_cache', 'score_cdn', 'score_gzip', 'score_cookies', 'score_keep-alive', 'score_minify', 'score_combine', 'score_compress', 'score_etags', 'gzip_total', 'gzip_savings', 'minify_total', 'minify_savings', 'image_total', 'image_savings', 'optimization_checked', 'titleTime', 'SpeedIndex');
+                        $fp = fopen($file, 'w');
+                        fputcsv($fp, $headers);
+                        fclose($fp);
+                    }
+
+                    // Append this run's data to the csv.
+                    $fp = fopen($file, 'a');
+                    fputcsv($fp, $csv_results);
+                    fclose($fp);
 
                 } else {
                     // TODO this means there were no sucessful results.
