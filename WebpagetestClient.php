@@ -255,6 +255,32 @@ class WebpagetestClient {
                         'xmlUrl' => $runXML->data->xmlUrl,
                         'details' => $detailsUrl,
                     );
+                    // @ToDos
+                    //  - create base file if it doesn't exist with set data headers.
+                    //  - dynamically create csv filename with $filename variable
+                    //  - adjust jenkins to upload to sync to s3.
+                    //  - refactor to pull this csv export to its own function.
+                    $csv_results = array();
+                    // setup the data before adding to csv
+                    $csv_results = array(
+                        $resultXML->data->location,
+                        $resultXML->data->label,
+                        $pageName, $browser,
+                        $test->date,
+                        $test->URL,
+                        $resultXML->data->testId,
+                        $resultXML->data->connectivity,
+                        $runXML->data->xmlUrl, $detailsUrl,
+                    );
+                    // Combine the above fields with numeric data via helper function.
+                    $csv_results = $csv_results + $this->extractNumericData($test);
+
+                    $file = '/Users/chrisfree/Desktop/results.csv';
+
+                    // append to csv
+                    $fp = fopen($file, 'a');
+                    fputcsv($fp, $csv_results);
+                    fclose($fp);
 
                 } else {
                     // TODO this means there were no sucessful results.
