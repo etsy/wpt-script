@@ -226,11 +226,10 @@ class WebpagetestClient {
 
                 if (!is_null($test)) {
 
-                    // Chromatic customizations to save and then upload offsite.
+                    // Save XML locally for uploading offsite via Jenkins.
                     $filename = preg_replace('#^https?://#', '', $resultXML->data->testUrl);
                     $filename = str_replace('/', '--', $filename);
                     file_put_contents('/webpagetest-runs/' . $filename . '-' . date("m-d-Y") . '.xml', file_get_contents($runXML->data->xmlUrl));
-                    // End Chromatic customizations.
 
                     $label_parts = explode(".", (string) $resultXML->data->label);
                     $browser = $label_parts[2];
@@ -255,13 +254,9 @@ class WebpagetestClient {
                         'xmlUrl' => $runXML->data->xmlUrl,
                         'details' => $detailsUrl,
                     );
-                    // @ToDos
-                    //  - create base file if it doesn't exist with set data headers.
-                    //  - dynamically create csv filename with $filename variable
-                    //  - adjust jenkins to upload to sync to s3.
-                    //  - refactor to pull this csv export to its own function.
+
                     $csv_results = array();
-                    // setup the data before adding to csv
+                    // Setup the row data before adding to csv.
                     $csv_results = array(
                         $resultXML->data->location,
                         $resultXML->data->label,
@@ -275,9 +270,16 @@ class WebpagetestClient {
                     // Combine the above fields with numeric data via helper function.
                     $csv_results = $csv_results + $this->extractNumericData($test);
 
-                    $file = '/Users/chrisfree/Desktop/results.csv';
+                    $file = '/webpagetest-runs/' . $filename . ".csv";
 
-                    // append to csv
+                    if (!file_exists($file)) {
+                        $headers = array('location', 'label', 'pageName', 'browser', 'date', 'URL', 'testId', 'connectivity', 'xmlUrl', 'details', 'loadTime', 'TTFB', 'bytesIn', 'bytesInDoc', 'connections', 'requests', 'requestsDoc', 'render', 'fullyLoaded', 'docTime', 'domTime', 'domElements', 'score_cache', 'score_cdn', 'score_gzip', 'score_cookies', 'score_keep-alive', 'score_minify', 'score_combine', 'score_compress', 'score_etags', 'gzip_total', 'gzip_savings', 'minify_total', 'minify_savings', 'image_total', 'image_savings', 'optimization_checked', 'titleTime', 'SpeedIndex');
+                        $fp = fopen($file, 'w');
+                        fputcsv($fp, $headers);
+                        fclose($fp);
+                    }
+
+                    // Append this run's data to the csv.
                     $fp = fopen($file, 'a');
                     fputcsv($fp, $csv_results);
                     fclose($fp);
